@@ -3,7 +3,11 @@ var express = require('express');
 const exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 var app = express();
-const greetings = require('./greet-factory');
+const greeting = require('./greet-factory');
+const greetingRoutes = require('./routes/route-factory')
+
+const greetings = greeting(greetingRoutes);
+
 
 //config express as middleware
 app.engine('handlebars', exphbs.engine());
@@ -16,21 +20,19 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
-app.get('/', function(req,res){
-    res.render('home', {
-        // numName: greetings.getCounter()
-    })
-});
 
 
-//this is a POST route
-app.post('/actions', function(req,res){
-    greetings.greetMe(req.body.strName,req.body.lang);
-    console.log(greetings.namesAdded());
-    res.redirect('/')
-    
+app.get('/', greetings.homeRoute);
 
-});
+app.post('/action', greetings.actionRoute);
+
+app.get('/greeted', greetings.greetedUsers);
+
+app.get('/overview/:username', greetings.overviewRoute);
+
+app.post('/reset', routeGreetings.resetRoute);
+
+
 //start the server
 var server = app.listen(3000, function(){
     

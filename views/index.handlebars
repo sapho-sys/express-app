@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greetingss</title>
+  <link rel="stylesheet" href="css/style-greetings.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Calligraffitti" />
+
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="topnav" id="myTopnav">
+
+      <a class="active">GREETINGS APP</a>
+      <a class="current" href="index.html">Reload</a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+
+    </div>
+  </header>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+
+            // displayMembers();
+
+
+  </script>
+  <div class="container">
+
+    <form action="action" method="POST">
+      <section class="contact-icon">
+
+
+        <div class="values">
+          <h3>Enter your name & choose which language for greeting the user</h3>
+        </div>
+
+
+        <div class="form flex">
+          <div class="icon-img">
+            {{!-- <img class="img-fluid" src="./icons/id.png" alt="file"> --}}
+          </div>
+
+          <div class="values">
+            <div class="txtbox">
+              <div class="input"><input id="name" type="text" name="userName" placeholder="First name"></div><br>
+
+            </div>
+            <br>
+
+            <div class="radBtn">
+              <div class="input"><input id="tick" type="radio" value="English" name="choice" >English</input></div>
+
+              <div class="input"><input id="tick2" type="radio" value="IsiXhosa" name="choice">IsiXhosa</input></div>
+
+              <div class="input"> <input id="tick3" type="radio" value="Afrikaans" name="choice">Afrikaans</input></div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+        </div>
+
+        <div class="values">
+          <h3>The number of people that have been greeted:<span class="number" id="counter">0</span></h3>
+        </div><br><br>
+        <p class="errorMessage" id="error"></p>
+        <p class="errorMessage1" id="error1"></p>
+
+        <div class="buttonss flex">
+          <button id="Entry" type="submit" name="button" class="Enter">Greet User</button>
+
+
+
+
+
+
+
+          <button class="Clear" onclick="deleteItems()">Clear Storage</button>
+
+
+        </div>
+      </section>
+
+
+
+
+    </form>
+
+
+
+  </div>
+
+
+
+
+
+  <table id="display" class="styled-table">
+    <thead>
+      <tr>
+        <!-- <th>#</th> -->
+
+        <th></th>
+
+        <th>Greet User</th>
+
+        {{!-- <th>Language chosen</th> --}}
+
+
+      </tr>
+    </thead>
+
+    <tbody class="blank">
+      <tr>
+        <!-- <td><p id="show"></p></td> -->
+
+        <!-- <td></td> -->
+
+        <!-- <td></td> -->
+        <!-- <td></td> -->
+      </tr>
+    </tbody>
+  </table>
+
+
+
+</body>
+
+
+
+</html>
