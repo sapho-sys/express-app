@@ -1,22 +1,34 @@
 var express = require('express');
+//import express handlebars
+const exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 var app = express();
+const greetings = require('./greet-factory');
 
+//config express as middleware
+app.engine('handlebars', exphbs.engine());
+app.set('view engine', 'handlebars');
 
+//css public in use
+app.use(express.static('public'));
 
-app.get('/hello', function(res, req){
-    res.send("Hello World!")
-})
-
-//this is a GET route
-app.get('/products/:id', function(){
-    console.log(req.params.id);
-    res.send("you sent me :" + req.params.id);
-
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+app.get('/', function(req,res){
+    res.render('home', {
+        // numName: greetings.getCounter()
+    })
 });
 
+
 //this is a POST route
-app.post('/hello', function(){
+app.post('/actions', function(req,res){
+    greetings.greetMe(req.body.strName,req.body.lang);
+    console.log(greetings.namesAdded());
+    res.redirect('/')
+    
 
 });
 //start the server
