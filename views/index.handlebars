@@ -57,17 +57,17 @@
 
           <div class="values">
             <div class="txtbox">
-              <div class="input"><input id="name" type="text" name="userName" placeholder="First name"></div><br>
+              <div class="input"><input id="name" type="text" name="username" placeholder="First name"></div><br>
 
             </div>
             <br>
 
             <div class="radBtn">
-              <div class="input"><input id="tick" type="radio" value="English" name="choice" >English</input></div>
+              <div class="input"><input id="tick" type="radio" value="english" name="choice">English</input></div>
 
-              <div class="input"><input id="tick2" type="radio" value="IsiXhosa" name="choice">IsiXhosa</input></div>
+              <div class="input"><input id="tick2" type="radio" value="isixhosa" name="choice">IsiXhosa</input></div>
 
-              <div class="input"> <input id="tick3" type="radio" value="Afrikaans" name="choice">Afrikaans</input></div>
+              <div class="input"> <input id="tick3" type="radio" value="afrikaans" name="choice">Afrikaans</input></div>
             </div>
           </div>
 
@@ -81,7 +81,7 @@
         </div>
 
         <div class="values">
-          <h3>The number of people that have been greeted:<span class="number" id="counter">0</span></h3>
+          <h3>The number of people that have been greeted:<span class="number" id="counter">{{greetedUsers}}</span></h3>
         </div><br><br>
         <p class="errorMessage" id="error"></p>
         <p class="errorMessage1" id="error1"></p>
@@ -95,7 +95,8 @@
 
 
 
-          <button class="Clear" onclick="deleteItems()">Clear Storage</button>
+          
+            <h3><a class="Clear" href="/detail">View Greeted Users</a></h3>
 
 
         </div>
@@ -114,33 +115,12 @@
 
 
 
-  <table id="display" class="styled-table">
-    <thead>
-      <tr>
-        <!-- <th>#</th> -->
-
-        <th></th>
-
-        <th>Greet User</th>
-
-        {{!-- <th>Language chosen</th> --}}
+  <div class="greet-message">
+    <h4 class="greeting"{{color}}>{{greeter}}</h4>
 
 
-      </tr>
-    </thead>
 
-    <tbody class="blank">
-      <tr>
-        <!-- <td><p id="show"></p></td> -->
-
-        <!-- <td></td> -->
-
-        <!-- <td></td> -->
-        <!-- <td></td> -->
-      </tr>
-    </tbody>
-  </table>
-
+  </div>
 
 
 </body>

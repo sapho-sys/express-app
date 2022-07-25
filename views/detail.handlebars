@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    
-</body>
-</html>
+<div class="row">
+    <h1>Actions</h1>
+
+    <table>
+        <tr>
+        <th>User Name Greeted</th>
+        <th>Number of times the user has been greeted</th>
+        </tr>
+        {{#each namesAdded}}
+        <tr>
+            <td>{{userGreeted}}</td>
+            <td>{{greetedCount}}</td>
+        </tr>
+        {{/each}}
+    </table>
+    <h3><a href="/overall">Look at all names that have been greeted </a></h3>
+    <h3><a href="/">Home Page</a></h3>
+
+</div>
