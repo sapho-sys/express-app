@@ -3,6 +3,7 @@ var express = require('express');
 const exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 const session = require('express-session');
+const moment = require('moment');
 const flash = require('express-flash');
 var app = express();
 const greeting = require('./greet-factory')([]);
@@ -52,32 +53,46 @@ app.post('/action', function(req, res){
 
        greeting.addNames(req.body.username,req.body.choice);
 
-       greeting.getCounter();
-
        let greeter = greeting.greetMsg();
 
        let greetedUsers = greeting.getCounter();
 
        console.log(greeting.greetMsg());
        console.log(greeting.getCounter());
+       console.log(greeting.myUsers());
     
     res.render('index',{
         greeter,
         greetedUsers
     })
 
-} );
+});
 
-app.get('/greeted', );
+app.get('/detail', function(req,res){
+    let bigData = greeting.myUsers();
 
-app.get('/detail/:username/:choice', function(){
-    let userGreeted = greeting.addNames(req.params.username,req.params.choice);
-    let greetedCount = greeting.getCounter(userGreeted);
-    console.log(greeting.namesAdded())
+    let storeData = [];
+
+    var rest = ' ';
+  var array_content = '';
+
+    for(let i = 0; i < bigData.length; i++){
+
+        storeData.push({
+            userGreeted:bigData[i].userGreeted,
+            greetedCount:bigData[i].greetedCount,
+            timestamp:(moment(bigData[i].timestamp, 'YYYY-MM-DD hh:mm:ss a').fromNow())
+        })
+        
+
+    }
+
+    
+    
 
     res.render('detail', {
-        userGreeted,
-        greetedCount
+    
+        allUsers: storeData
 
     });
 } );

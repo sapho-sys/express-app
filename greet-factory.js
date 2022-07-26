@@ -1,9 +1,11 @@
+const moment = require('moment');
 module.exports = function greeting(namesData) {
 
 	var storeNames = namesData || {};
-	var counter = 1;
+	
 	const RegExp = /^[A-Za-z]+$/;
 	var strMessage = ' ';
+	let allUsers = [];
 
 
 	function greetUser(myName, lang) {
@@ -11,8 +13,8 @@ module.exports = function greeting(namesData) {
 		let strName = myName.trim();
 
 		try {
-			
-			if (strName !== '' ) {
+
+			if (strName !== '') {
 				if (strName.match(RegExp)) {
 					theName = strName.charAt(0).toUpperCase() + strName.slice(1).toLowerCase();
 
@@ -54,16 +56,26 @@ module.exports = function greeting(namesData) {
 	}
 
 
-	function addNames(name, lang) {
+	function addNames(userName, lang) {
+		let strName = '';
+	
+
+		let name = userName.trim()
 		if (name !== "" && lang !== "") {
 			if (name.match(RegExp)) {
-				var strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+				 strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 				if (!storeNames[strName]) {
 					storeNames[strName] = 1;
-					counter++;
+					
+					
 
 				} else {
 					storeNames[strName]++;
+					allUsers.push({
+						userGreeted: Object.keys(storeNames).join(", "),
+						greetedCount: Object.values(storeNames).join(", "),
+						timestamp: new Date()
+					});
 
 				}
 			}
@@ -85,12 +97,18 @@ module.exports = function greeting(namesData) {
 
 	}
 
+	function myUsers() {
+		return allUsers;
+
+	}
+
 	return {
 		getCounter,
 		namesAdded,
 		greetUser,
 		greetMsg,
-		addNames
+		addNames,
+		myUsers
 
 
 

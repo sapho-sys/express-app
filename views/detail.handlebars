@@ -1,19 +1,88 @@
-<div class="row">
-    <h1>Actions</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-    <table>
-        <tr>
-        <th>User Name Greeted</th>
-        <th>Number of times the user has been greeted</th>
-        </tr>
-        {{#each namesAdded}}
-        <tr>
-            <td>{{userGreeted}}</td>
-            <td>{{greetedCount}}</td>
-        </tr>
-        {{/each}}
-    </table>
-    <h3><a href="/overall">Look at all names that have been greeted </a></h3>
-    <h3><a href="/">Home Page</a></h3>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greetingss</title>
+    <link rel="stylesheet" href="./css/style-greetings.css">
+    <link rel="stylesheet" href="./css/utilities.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Calligraffitti" />
 
-</div>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="topnav" id="myTopnav">
+
+            <a class="active">GREETINGS APP</a>
+            <a class="current" href="/">Homepage</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+
+        </div>
+    </header>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+
+            // displayMembers();
+
+
+    </script>
+    
+
+    
+    
+
+
+    <div class="row">
+
+
+        <table id="display" class="styled-table">
+            <thead>
+                <tr>
+                    <th>usernames greeted</th>
+                    <th># of times the user was greeted</th>
+                    <th>update when new user is greeted</th>
+                </tr>
+                {{#each allUsers}}
+
+            </thead>
+
+            <tbody class="blank">
+                <tr>
+                    <td>{{userGreeted}}</td>
+                    <td>{{greetedCount}}</td>
+                    <td>{{timestamp}}</td>
+                </tr>
+                {{/each}}
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+
+  
+
+    <script src="./tests/greetFactory.js"></script>
+    <script src="./js/greetCode.js"></script>
+
+
+</body>
+
+
+
+</html>
