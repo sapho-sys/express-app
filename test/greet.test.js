@@ -128,10 +128,10 @@ describe('Greetings App' , function(){
 
             greetExercise.setData({
                 name: 'Sapho',
-                count: 0
+                count: 1
             })
 
-            assert.deepEqual([{name: 'Sapho', count:0}], greetExercise.storedData())
+            assert.deepEqual([{greeted_users: 'Sapho', counter:1}], greetExercise.storedData())
         })
     })
  

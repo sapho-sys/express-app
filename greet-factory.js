@@ -1,7 +1,7 @@
 const moment = require('moment');
-module.exports = function greeting(namesData) {
+module.exports = function greeting(db) {
 
-	var storeNames = namesData || {};
+	const data = db;
 
 	const RegExp = /^[A-Za-z]+$/;
 	var strMessage = ' ';
@@ -56,18 +56,23 @@ module.exports = function greeting(namesData) {
 	}
 
 
-	function addNames(userName, lang) {
+	async function addNames(userName, lang) {
 
 		let name = userName.trim()
 		if (name !== "" && lang !== "") {
 			if (name.match(RegExp)) {
 				strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-				if (!storeNames[strName]) {
-					storeNames[strName] = 1;
-				} else {
-					storeNames[strName]++;
+				if (lang === 'english' || lang === 'afrikaans' || lang === 'isixhosa') {
+					const sql = await data.manyOrNone('SELECT * FROM users_greeted WHERE greet_users = $1',[strName]);
+
+					if(sql[0].rows == 0){
+						await data.none('INSERT INTO users_greeted (greeted_users, counter) VALUES ($1,$2)',[strName, 1]);
+					} else{
+						await data.none('UPDATE users_greeted SET counter = counter + 1 WHERE greeted_users = $1',[strName]);
+					}
 
 				}
+				
 			}
 		}
 	}
@@ -76,9 +81,15 @@ module.exports = function greeting(namesData) {
 		return strMessage;
 	}
 
-	function getCounter() {
-		return Object.keys(storeNames).length;
+	async function getCounter() {
+		const dataLength = await data.manyOrNone('SELECT COUNT(*) FROM users-greeted');
+		return dataLength.rows[0].count;
 
+	}
+
+	async function resetDB(){
+		strMessage = "Date erased...";
+		return data.none('DELETE FROM users_greeted')
 	}
 
 	function namesAdded() {

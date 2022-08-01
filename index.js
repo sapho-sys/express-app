@@ -22,9 +22,8 @@ const pool = new Pool({
 		rejectUnauthorized:false
 	}
 });
-const user = await pool.manyOrNone('select * from users_greeted');
 
-console.log(user);
+
 
 
 
