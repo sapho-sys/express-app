@@ -119,6 +119,20 @@ describe('Greetings App' , function(){
 
         });
     });
+    describe('Data Entry', function(){
+        it('should record an entry for a table', function(){
+            let greetExercise = greeting();
 
+        
+            
+
+            greetExercise.setData({
+                name: 'Sapho',
+                count: 0
+            })
+
+            assert.deepEqual([{name: 'Sapho', count:0}], greetExercise.storedData())
+        })
+    })
  
 });

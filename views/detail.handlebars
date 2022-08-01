@@ -39,47 +39,27 @@
 
 
     </script>
-    
-
-    
-    
 
 
-    <div class="row">
 
 
-        <table id="display" class="styled-table">
-            <thead>
-                <tr>
-                    <th>usernames greeted</th>
-                    <th># of times the user was greeted</th>
-                    <th>update when new user is greeted</th>
-                </tr>
-                {{#each allUsers}}
-
-            </thead>
-
-            <tbody class="blank">
-                <tr>
-                    <td>{{userGreeted}}</td>
-                    <td>{{greetedCount}}</td>
-                    <td>{{timestamp}}</td>
-                </tr>
-                {{/each}}
-
-            </tbody>
-
-        </table>
 
 
+    <h1 style="margin-left: 450px;margin-bottom: 40px">Names That Have Been Greeted</h1>
+    <div style="text-align:center">
+        {{#each allUsers}}
+        <a href="/detail/{{@key}}" style="text-decoration:none">
+            <h2>{{@key}}</h2>
+        </a>
+        {{/each}}
     </div>
 
 
-  
 
-    <script src="./tests/greetFactory.js"></script>
-    <script src="./js/greetCode.js"></script>
 
+
+
+    
 
 </body>
 

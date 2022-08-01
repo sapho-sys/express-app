@@ -2,7 +2,7 @@ const moment = require('moment');
 module.exports = function greeting(namesData) {
 
 	var storeNames = namesData || {};
-	
+
 	const RegExp = /^[A-Za-z]+$/;
 	var strMessage = ' ';
 	let allUsers = [];
@@ -31,17 +31,17 @@ module.exports = function greeting(namesData) {
 						}
 
 					} else {
-						strMessage = 'Error! language not selected';
+						strMessage = 'Error! Please select a language';
 
 					}
 
 				} else {
-					strMessage = 'Error! special characters entered';
+					strMessage = 'Error! Do not enter special characters';
 
 				}
 
 			} else {
-				strMessage = 'Error! name not entered';
+				strMessage = 'Error! Please select enter your name';
 
 			}
 
@@ -57,30 +57,19 @@ module.exports = function greeting(namesData) {
 
 
 	function addNames(userName, lang) {
-		let strName = '';
-	
 
 		let name = userName.trim()
 		if (name !== "" && lang !== "") {
 			if (name.match(RegExp)) {
-				 strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+				strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 				if (!storeNames[strName]) {
 					storeNames[strName] = 1;
-					
-					
-
 				} else {
 					storeNames[strName]++;
-					allUsers.push({
-						userGreeted: Object.keys(storeNames).join(", "),
-						greetedCount: Object.values(storeNames).join(", "),
-						timestamp: new Date()
-					});
 
 				}
 			}
 		}
-
 	}
 
 	function greetMsg() {
@@ -96,8 +85,21 @@ module.exports = function greeting(namesData) {
 		return storeNames;
 
 	}
+    let counter = 0;
+	let username="";
 
-	function myUsers() {
+	function setData() {
+
+		
+			allUsers.push({
+				username: String(username),
+				count: counter
+			})
+
+
+	}
+
+	function storedData() {
 		return allUsers;
 
 	}
@@ -108,7 +110,8 @@ module.exports = function greeting(namesData) {
 		greetUser,
 		greetMsg,
 		addNames,
-		myUsers
+		setData,
+		storedData
 
 
 

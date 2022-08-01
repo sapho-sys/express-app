@@ -7,6 +7,25 @@ const moment = require('moment');
 const flash = require('express-flash');
 var app = express();
 const greeting = require('./greet-factory')([]);
+const {Pool} = require('pg');
+let useSSL = false;
+let local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local){
+	useSSL = true;
+}
+// which db connection to use
+const connectionString = process.env.DATABASE_URL || 'postgresql://coder:localhost:3011/my_users';
+
+const pool = new Pool({
+	connectionString,
+	ssl : {
+		rejectUnauthorized:false
+	}
+});
+const user = await pool.manyOrNone('select * from users_greeted');
+
+console.log(user);
+
 
 
 
@@ -59,7 +78,8 @@ app.post('/action', function(req, res){
 
        console.log(greeting.greetMsg());
        console.log(greeting.getCounter());
-       console.log(greeting.myUsers());
+       console.log(greeting.namesAdded());
+       console.log(greeting.storedData());
     
     res.render('index',{
         greeter,
@@ -69,30 +89,10 @@ app.post('/action', function(req, res){
 });
 
 app.get('/detail', function(req,res){
-    let bigData = greeting.myUsers();
-
-    let storeData = [];
-
-    var rest = ' ';
-  var array_content = '';
-
-    for(let i = 0; i < bigData.length; i++){
-
-        storeData.push({
-            userGreeted:bigData[i].userGreeted,
-            greetedCount:bigData[i].greetedCount,
-            timestamp:(moment(bigData[i].timestamp, 'YYYY-MM-DD hh:mm:ss a').fromNow())
-        })
-        
-
-    }
-
-    
-    
-
+   
     res.render('detail', {
     
-        allUsers: storeData
+        allUsers: greeting.namesAdded()
 
     });
 } );
