@@ -89,7 +89,7 @@ module.exports = function greeting(db) {
 
 	async function resetDB(){
 		strMessage = "Date erased...";
-		return data.none('DELETE FROM users_greeted')
+		return data.none('DELETE FROM users_greeted');
 	}
 
 	function namesAdded() {
@@ -121,7 +121,7 @@ module.exports = function greeting(db) {
 		greetUser,
 		greetMsg,
 		addNames,
-		setData,
+		resetDB,
 		storedData
 
 
