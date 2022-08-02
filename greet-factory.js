@@ -2,13 +2,12 @@ const moment = require('moment');
 module.exports = function greeting(db) {
 
 	const data = db;
-
 	const RegExp = /^[A-Za-z]+$/;
 	var strMessage = ' ';
-	let allUsers = [];
+	
 
 
-	function greetUser(myName, lang) {
+	async function greetUser(myName, lang) {
 		let theName = '';
 		let strName = myName.trim();
 
@@ -63,16 +62,16 @@ module.exports = function greeting(db) {
 			if (name.match(RegExp)) {
 				strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 				if (lang === 'english' || lang === 'afrikaans' || lang === 'isixhosa') {
-					const sql = await data.manyOrNone('SELECT * FROM users_greeted WHERE greet_users = $1',[strName]);
+					const sql = await data.manyOrNone('SELECT * FROM users_greeted WHERE greet_users = $1', [strName]);
 
-					if(sql[0].rows == 0){
-						await data.none('INSERT INTO users_greeted (greeted_users, counter) VALUES ($1,$2)',[strName, 1]);
-					} else{
-						await data.none('UPDATE users_greeted SET counter = counter + 1 WHERE greeted_users = $1',[strName]);
+					if (sql[0].rows == 0) {
+						await data.none('INSERT INTO users_greeted (greeted_users, counter) VALUES ($1,$2)', [strName, 1]);
+					} else {
+						await data.none('UPDATE users_greeted SET counter = counter + 1 WHERE greeted_users = $1', [strName]);
 					}
 
 				}
-				
+
 			}
 		}
 	}
@@ -82,12 +81,12 @@ module.exports = function greeting(db) {
 	}
 
 	async function getCounter() {
-		const dataLength = await data.manyOrNone('SELECT COUNT(*) FROM users-greeted');
+		const dataLength = await data.manyOrNone('SELECT COUNT(*) FROM users_greeted');
 		return dataLength.rows[0].count;
 
 	}
 
-	async function resetDB(){
+	async function resetDB() {
 		strMessage = "Date erased...";
 		return data.none('DELETE FROM users_greeted');
 	}
@@ -96,24 +95,10 @@ module.exports = function greeting(db) {
 		return storeNames;
 
 	}
-    let counter = 0;
-	let username="";
+	
+	
 
-	function setData() {
-
-		
-			allUsers.push({
-				username: String(username),
-				count: counter
-			})
-
-
-	}
-
-	function storedData() {
-		return allUsers;
-
-	}
+	
 
 	return {
 		getCounter,
@@ -121,8 +106,7 @@ module.exports = function greeting(db) {
 		greetUser,
 		greetMsg,
 		addNames,
-		resetDB,
-		storedData
+		resetDB
 
 
 

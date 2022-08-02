@@ -8,20 +8,19 @@ const flash = require('express-flash');
 var app = express();
 const greeting = require('./greet-factory')([]);
 const {Pool} = require('pg');
+
+
 let useSSL = false;
 let local = process.env.LOCAL || false;
 if (process.env.DATABASE_URL && !local){
-	useSSL = true;
+    useSSL = true;
 }
-// which db connection to use
-const connectionString = process.env.DATABASE_URL || 'postgresql://coder:localhost:3011/my_users';
+const connectionString = process.env.DATABASE_URL || 'postgresql://codex:sapho123:localhost:3011/my_users';
 
-const pool = new Pool({
-	connectionString,
-	ssl : {
-		rejectUnauthorized:false
-	}
-});
+const db = pgp(connectionString);
+
+const greetingsDB = greeting(db);
+
 
 
 
