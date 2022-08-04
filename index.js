@@ -86,20 +86,13 @@ app.post('/action', async function (req, res) {
 });
 
 app.get('/detail', async function (req, res) {
-
-
     let bigData = await greetingsDB.namesAdded()
-    console.log("this the data;",bigData);
-
-
-
     res.render('detail', {
         allUsers: bigData
     });
-
-
-
 });
+
+
 
 app.post('/reset', async function (req, res) {
     await greetingsDB.resetDB();

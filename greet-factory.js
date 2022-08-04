@@ -97,7 +97,6 @@ module.exports = function greeting(db) {
 	}
 
 	async function resetDB() {
-		strMessage = "Data erased...";
 		return data.none('DELETE FROM users_greeted');
 	}
 
@@ -106,6 +105,8 @@ module.exports = function greeting(db) {
 
 		return storedNames;
 	}
+
+	
 	
 	
 

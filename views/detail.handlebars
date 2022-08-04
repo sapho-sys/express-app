@@ -35,14 +35,14 @@
             }
         }
 
-            // displayMembers();
 
 
     </script>
     <table id="display" class="styled-table">
         <thead>
             <tr>
-                <th>Greet User</th>
+                <th>Greet Users</th>
+                <th># of times greeted</th>
             </tr>
         </thead>
 
@@ -50,6 +50,7 @@
             {{#each allUsers}}
             <tr>
                 <td>{{this.greeted_users}}</td>
+                <td>{{this.counter}}</td>
             </tr>
             {{/each}}
         </tbody>
