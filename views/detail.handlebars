@@ -39,26 +39,25 @@
 
 
     </script>
+    <table id="display" class="styled-table">
+        <thead>
+            <tr>
+                <th>Greet User</th>
+            </tr>
+        </thead>
+
+        <tbody class="blank">
+            {{#each allUsers}}
+            <tr>
+                <td>{{this.greeted_users}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
 
 
 
-
-
-    <div class="container names-greeted">
-        <h2>Names Greeted</h2>
-
-        <div class="test">
-            <ul>
-                {{#each allUsers}}
-                <li>{{this.greeted_users}}</a></li>
-
-                {{/each}}
-
-            </ul>
-        </div>
-        {{!-- <h5><a href="/">hompage</a></h5> --}}
-    </div>
 
 
 
