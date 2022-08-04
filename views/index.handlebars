@@ -18,7 +18,14 @@
     <div class="topnav" id="myTopnav">
 
       <a class="active">GREETINGS APP</a>
-      <a class="current" href="index.html">Reload</a>
+      <form action="reset" method="POST">
+        {{!-- <div class="reset-btn"> --}}
+          
+          <a class="current" on type="submit" name="button"><button class="refreshBtn" on type="submit" name="button">Reset</button></a>
+
+
+      </form>
+      
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
       </a>
@@ -83,6 +90,12 @@
         <div class="values">
           <h3>The number of people that have been greeted:<span class="number" id="counter">{{greetedUsers}}</span></h3>
         </div><br><br>
+        <div class="greet-message">
+          <h4 class="greeting" {{color}}>{{greeter}}</h4>
+
+
+
+        </div>
         <p class="errorMessage" id="error"></p>
         <p class="errorMessage1" id="error1"></p>
 
@@ -95,8 +108,8 @@
 
 
 
-          
-            <h3><a class="Clear" href="/detail">View Greeted Users</a></h3>
+
+          <h3><a class="Clear" href="/detail">View Greeted Users</a></h3>
 
 
         </div>
@@ -115,12 +128,7 @@
 
 
 
-  <div class="greet-message">
-    <h4 class="greeting"{{color}}>{{greeter}}</h4>
 
-
-
-  </div>
 
 
 </body>

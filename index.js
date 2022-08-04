@@ -1,33 +1,33 @@
+'use strict';
 var express = require('express');
 //import express handlebars
-const exphbs  = require('express-handlebars');
+const exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 const session = require('express-session');
 const moment = require('moment');
 const flash = require('express-flash');
 var app = express();
-const greeting = require('./greet-factory')([]);
-const {Pool} = require('pg');
+const greeting = require('./greet-factory');
+const pgPromise = require('pg-promise')
+const pgp = pgPromise({});
 
 
 let useSSL = false;
 let local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local){
+if (process.env.DATABASE_URL && !local) {
     useSSL = true;
 }
-const connectionString = process.env.DATABASE_URL || 'postgresql://codex:sapho123:localhost:3011/my_users';
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:sap123@localhost:5432/my_users';
+
+
+
+
 
 const db = pgp(connectionString);
 
+
 const greetingsDB = greeting(db);
 
-
-
-
-
-
-
- 
 
 //config express as middleware
 app.engine('handlebars', exphbs.engine());
@@ -43,64 +43,73 @@ app.use(bodyParser.json());
 
 // initialise session middleware - flash-express depends on it
 app.use(session({
-	secret : 'flash the mesaage',
-	resave: false,
-	saveUninitialized: true
+    secret: 'flash the mesaage',
+    resave: false,
+    saveUninitialized: true
 }));
 
 // initialise the flash middleware
 app.use(flash());
 
 
-app.get('/', function(req,res){
-    req.flash('message', greeting.greetMsg());
+app.get('/', async function (req, res) {
+    req.flash('message', greetingsDB.greetMsg());
 
-    
     res.render('index', {
-        greetedUsers: greeting.getCounter(),
-        greetUsers:greeting.greetMsg()
-        
+        greetedUsers: await greetingsDB.getCounter(),
+        greetUsers: await greetingsDB.greetMsg()
+
+
     })
 
 });
 
-app.post('/action', function(req, res){
-   
-       greeting.greetUser(req.body.username,req.body.choice);
+app.post('/action', async function (req, res) {
 
-       greeting.addNames(req.body.username,req.body.choice);
+    try {
+        await greetingsDB.greetUser(req.body.username, req.body.choice);
 
-       let greeter = greeting.greetMsg();
+        await greetingsDB.addNames(req.body.username, req.body.choice);
 
-       let greetedUsers = greeting.getCounter();
+        let greeter = await greetingsDB.greetMsg();
 
-       console.log(greeting.greetMsg());
-       console.log(greeting.getCounter());
-       console.log(greeting.namesAdded());
-       console.log(greeting.storedData());
-    
-    res.render('index',{
-        greeter,
-        greetedUsers
-    })
+        let greetedUsers = await greetingsDB.getCounter();
+
+        res.render('index', {
+            greeter,
+            greetedUsers
+        })
+    } catch (error) {
+        console.log(error);
+    }
 
 });
 
-app.get('/detail', function(req,res){
-   
+app.get('/detail', async function (req, res) {
+
+
+    let bigData = await greetingsDB.namesAdded()
+    console.log("this the data;",bigData);
+
+
+
     res.render('detail', {
-    
-        allUsers: greeting.namesAdded()
-
+        allUsers: bigData
     });
-} );
 
-app.post('/reset', );
+
+
+});
+
+app.post('/reset', async function (req, res) {
+    await greetingsDB.resetDB();
+    res.redirect('/');
+});
 
 
 //start the server
 const PORT = process.env.PORT || 3011;
 
-app.listen(PORT, function(){
-    console.log("App running at PORT:", PORT)
+app.listen(PORT, function () {
+    console.log("App running at http://localhost:" + PORT)
 });

@@ -45,13 +45,19 @@
 
 
 
-    <h1 style="margin-left: 450px;margin-bottom: 40px">Names That Have Been Greeted</h1>
-    <div style="text-align:center">
-        {{#each allUsers}}
-        <a href="/detail/{{@key}}" style="text-decoration:none">
-            <h2>{{@key}}</h2>
-        </a>
-        {{/each}}
+    <div class="container names-greeted">
+        <h2>Names Greeted</h2>
+
+        <div class="test">
+            <ul>
+                {{#each allUsers}}
+                <li>{{this.greeted_users}}</a></li>
+
+                {{/each}}
+
+            </ul>
+        </div>
+        {{!-- <h5><a href="/">hompage</a></h5> --}}
     </div>
 
 
@@ -59,7 +65,6 @@
 
 
 
-    
 
 </body>
 
