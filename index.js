@@ -1,4 +1,4 @@
-
+'use strict';
 var express = require('express');
 //import express handlebars
 const exphbs = require('express-handlebars');
@@ -12,24 +12,24 @@ const pgPromise = require('pg-promise')
 const pgp = pgPromise({});
 
 
-// let useSSL = false;
-// let local = process.env.LOCAL || false;
-// if (process.env.DATABASE_URL && !local) {
-//     useSSL = true;
-// }
+
+
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:sap123@localhost:5432/my_users';
 
 const config = { 
-	connectionString
-}
-
-if (process.env.NODE_ENV == 'production') {
-	config.ssl = { 
+	connectionString,
+    ssl : { 
 		rejectUnauthorized : false
 	}
+
 }
 
+
+
+
+
 const db = pgp(config);
+
 
 const greetingsDB = greeting(db);
 
@@ -46,16 +46,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json());
 
-
-
 // initialise session middleware - flash-express depends on it
 app.use(session({
     secret: 'flash the mesaage',
     resave: false,
     saveUninitialized: true
-
+    
+    
 }));
-
 
 // initialise the flash middleware
 app.use(flash());
@@ -74,11 +72,16 @@ app.get('/', async function (req, res) {
 });
 
 app.post('/action', async function (req, res) {
+
     try {
         await greetingsDB.greetUser(req.body.username, req.body.choice);
+
         await greetingsDB.addNames(req.body.username, req.body.choice);
+
         let greeter = await greetingsDB.greetMsg();
+
         let greetedUsers = await greetingsDB.getCounter();
+
         res.render('index', {
             greeter,
             greetedUsers
@@ -99,9 +102,13 @@ app.get('/detail', async function (req, res) {
 app.get('/info/:username', async function (req, res){
     const user_greeted = req.params.username;
     const greetedNum = await greetingsDB.greetedPool(user_greeted);
+    console.log('myCount:',greetedNum)
     res.render('info',{
         user_greeted,
         greetedNum
+
+
+
     })
 
 })
