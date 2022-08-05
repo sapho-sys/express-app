@@ -106,11 +106,11 @@ module.exports = function greeting(db) {
 		return storedNames;
 	}
 
-	// async function greetedPool(username){
-	// 	const sqlData = await data.manyOrNone('SELECT * FROM  users_greeted  WHERE greeted_users = $1',[username]);
-	// 	const myCount = sqlData;
-	// 	return myCount;
-	// }
+	async function greetedPool(username){
+		const sqlData = await data.query('SELECT * FROM  users_greeted  WHERE greeted_users = $1',[username]);
+		const myCount = sqlData;
+		return myCount[0].counter;
+	}
 
 	
 	
@@ -124,7 +124,7 @@ module.exports = function greeting(db) {
 		greetUser,
 		greetMsg,
 		addNames,
-		resetDB
-		// greetedPool
+		resetDB,
+		greetedPool
 	}
 }
