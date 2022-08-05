@@ -32,7 +32,7 @@ if (process.env.NODE_ENV == 'production') {
 
 
 
-const db = pgp(connectionString);
+const db = pgp(config);
 
 
 const greetingsDB = greeting(db);
