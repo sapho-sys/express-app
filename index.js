@@ -1,4 +1,4 @@
-'use strict';
+
 var express = require('express');
 //import express handlebars
 const exphbs = require('express-handlebars');
@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json());
 
-app.set('trust proxy', 1) // trust first proxy
+
 
 // initialise session middleware - flash-express depends on it
 app.use(session({
