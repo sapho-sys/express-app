@@ -74,16 +74,11 @@ app.get('/', async function (req, res) {
 });
 
 app.post('/action', async function (req, res) {
-
     try {
         await greetingsDB.greetUser(req.body.username, req.body.choice);
-
         await greetingsDB.addNames(req.body.username, req.body.choice);
-
         let greeter = await greetingsDB.greetMsg();
-
         let greetedUsers = await greetingsDB.getCounter();
-
         res.render('index', {
             greeter,
             greetedUsers
@@ -104,13 +99,9 @@ app.get('/detail', async function (req, res) {
 app.get('/info/:username', async function (req, res){
     const user_greeted = req.params.username;
     const greetedNum = await greetingsDB.greetedPool(user_greeted);
-    console.log('myCount:',greetedNum)
     res.render('info',{
         user_greeted,
         greetedNum
-
-
-
     })
 
 })
