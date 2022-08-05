@@ -12,23 +12,27 @@ const pgPromise = require('pg-promise')
 const pgp = pgPromise({});
 
 
-
+let useSSL = false;
+let local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local) {
+    useSSL = true;
+}
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:sap123@localhost:5432/my_users';
 
 const config = { 
-	connectionString,
-    ssl : { 
+	connectionString
+}
+
+if (process.env.NODE_ENV == 'production') {
+	config.ssl = { 
 		rejectUnauthorized : false
 	}
-
 }
 
 
 
-
-
-const db = pgp(config);
+const db = pgp(connectionString);
 
 
 const greetingsDB = greeting(db);

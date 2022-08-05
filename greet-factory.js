@@ -107,7 +107,7 @@ module.exports = function greeting(db) {
 	}
 
 	async function greetedPool(username){
-		const sqlData = await data.query('SELECT * FROM  user_greeted  WHERE greeted_users = $1',[username]);
+		const sqlData = await data.oneOrNone('SELECT * FROM  user_greeted  WHERE greeted_users = $1',[username]);
 		const myCount = sqlData;
 		return myCount[0].counter;
 	}
