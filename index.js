@@ -52,8 +52,7 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     secret: 'flash the mesaage',
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    saveUninitialized: true
 
 }));
 
