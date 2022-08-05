@@ -48,9 +48,10 @@ app.use(session({
     secret: 'flash the mesaage',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie: { maxAge: 60000 }
 
 }));
+
 
 // initialise the flash middleware
 app.use(flash());
