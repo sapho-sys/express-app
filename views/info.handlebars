@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greetingss</title>
-    <link rel="stylesheet" href="./css/style-greetings.css">
-    <link rel="stylesheet" href="./css/utilities.css">
+    <link rel="stylesheet" href="/css/style-greetings.css">
+    <link rel="stylesheet" href="/css/utilities.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Calligraffitti" />
 
@@ -18,7 +18,7 @@
         <div class="topnav" id="myTopnav">
 
             <a class="active">GREETINGS APP</a>
-            <a class="current" href="/">Homepage</a>
+            <a class="current" href="/detail">Names Greeted</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
@@ -38,23 +38,13 @@
 
 
     </script>
-    <table id="display" class="styled-table">
-        <thead>
-            <tr>
-                <th>Greet Users</th>
-                <th># of times greeted</th>
-            </tr>
-        </thead>
 
-        <tbody class="blank">
-            {{#each allUsers}}
-            <tr>
-                <td><a href="/info/{{this.greeted_users}}">{{this.greeted_users}}</a></td>
-                <td>{{this.counter}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    <div class="container user-greeted">
+        <div class="detail">
+            <h4>Hello, {{user_greeted}} has been greeted {{greetedNum}} time(s)</h4>
+        </div>   
+    </div>
+
 
 
 

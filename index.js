@@ -92,6 +92,20 @@ app.get('/detail', async function (req, res) {
     });
 });
 
+app.get('/info/:username', async function (req, res){
+    const user_greeted = req.params.username;
+    const greetedNum = await greetingsDB.greetedPool(user_greeted);
+    console.log('myCount:',greetedNum)
+    res.render('info',{
+        user_greeted,
+        greetedNum
+
+
+
+    })
+
+})
+
 
 
 app.post('/reset', async function (req, res) {
