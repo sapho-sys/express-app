@@ -8,6 +8,7 @@ const moment = require('moment');
 const flash = require('express-flash');
 var app = express();
 const greeting = require('./greet-factory');
+const greetingRouters = require('./routes/routes')
 const pgPromise = require('pg-promise')
 const pgp = pgPromise({});
 
@@ -37,6 +38,8 @@ const db = pgp(config);
 
 const greetingsDB = greeting(db);
 
+let greetRouter = greetingRouters(greetingsDB);
+
 
 //config express as middleware
 app.engine('handlebars', exphbs.engine());
@@ -63,66 +66,15 @@ app.use(session({
 app.use(flash());
 
 
-app.get('/', async function (req, res) {
-    req.flash('message', greetingsDB.greetMsg());
+app.get('/', greetRouter.Autopilot);
 
-    res.render('index', {
-        greetedUsers: await greetingsDB.getCounter(),
-        greetUsers: await greetingsDB.greetMsg()
+app.post('/action', greetRouter.HomePage);
 
+app.get('/detail', greetRouter.Detail);
 
-    })
+app.get('/info/:username', greetRouter.Information);
 
-});
-
-app.post('/action', async function (req, res) {
-
-    try {
-        await greetingsDB.greetUser(req.body.username, req.body.choice);
-
-        await greetingsDB.addNames(req.body.username, req.body.choice);
-
-        let greeter = await greetingsDB.greetMsg();
-
-        let greetedUsers = await greetingsDB.getCounter();
-
-        res.render('index', {
-            greeter,
-            greetedUsers
-        })
-    } catch (error) {
-        console.log(error);
-    }
-
-});
-
-app.get('/detail', async function (req, res) {
-    let bigData = await greetingsDB.namesAdded()
-    res.render('detail', {
-        allUsers: bigData
-    });
-});
-
-app.get('/info/:username', async function (req, res){
-    const user_greeted = req.params.username;
-    const greetedNum = await greetingsDB.greetedPool(user_greeted);
-    console.log('myCount:',greetedNum)
-    res.render('info',{
-        user_greeted,
-        greetedNum
-
-
-
-    })
-
-})
-
-
-
-app.post('/reset', async function (req, res) {
-    await greetingsDB.resetDB();
-    res.redirect('/');
-});
+app.post('/reset', greetRouter.Reset);
 
 
 //start the server
