@@ -1,138 +1,141 @@
 const assert = require('assert');
 
 const greeting = require('../greet-factory');
+const pgPromise = require('pg-promise')
+const pgp = pgPromise({});
 
 
-describe('Greetings App' , function(){
-    
-    describe('Greet our users' , function(){
-        it('should greet Sapho in English, if English radio button has be checked.' ,  function(){
-            let greetExercise = greeting();
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:sap123@localhost:5432/my_users';
 
-             greetExercise.greetUser('saPhO','english');
+const config = {
+    connectionString
+}
 
-            assert.equal('Hello, Sapho',  greetExercise.greetMsg());
+if (process.env.NODE_ENV == 'production') {
+    config.ssl = {
+        rejectUnauthorized: false
+    }
+}
 
-        });
-        it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.' , function(){
-            let greetExercise = greeting();
 
-             
-             greetExercise.greetUser('thaNos','afrikaans');
 
-            assert.equal('Hallo, Thanos',  greetExercise.greetMsg());
+const db = pgp(config);
 
-        });
-        it('should greet Lukhanyo in isiXhosa, if isiXhosa radio button has be checked.' ,  function(){
-            let greetExercise = greeting();
-
-             
-             greetExercise.greetUser('lukhanYo','isixhosa');
-
-            assert.equal('Molo, Lukhanyo',  greetExercise.greetMsg());
-
-        });
-    });
-
-    describe('Increment names to my empty object' ,  function(){
-        it('should increment Sapho as a key to my empty object and give it a value of 1 which will represent how many time(s) is the name greeted.' ,  function(){
-            let greetExercise = greeting();
-
-             greetExercise.addNames('saPhO', 'english');
-
-            assert.deepEqual({Sapho: 1},  greetExercise.namesAdded());
-
-        });
-        it("shouldn't increment Sapho if the name is already in my object but rather increment the value of it to 3." , function(){
-            let greetExercise = greeting();
-
-             greetExercise.addNames('saphO', 'english');
-             greetExercise.addNames('sapho', 'english');
-             greetExercise.addNames('saPho', 'english');
-
-            assert.deepEqual({Sapho: 3},  greetExercise.namesAdded());
-
-        });
-        it('should add 1 name to my local storage and give it a value of 1 which will represent how many time(s) is the name greeted.' ,  function(){
-            let greetExercise = greeting();
-
-            
-             greetExercise.addNames('thanoS', 'english');
-             greetExercise.addNames('phumza', 'afrikaans');
-             greetExercise.addNames('lukhanyo', 'isixhosa');
-
-            assert.deepEqual({Thanos: 1, Phumza: 1, Lukhanyo: 1}, greetExercise.namesAdded());
-
-        });
-        it('should add 2 names to my local storage and give it a value of 2 which will represent how many time(s) is the name greeted.' , function(){
-            let greetExercise = greeting();
-
-            
-            greetExercise.addNames('thanos', 'english');
-            greetExercise.addNames('phumza', 'afrikaans');
-            greetExercise.addNames('lukhanyo', 'isixhosa');
-            greetExercise.addNames('thaNos', 'isixhosa');
-            greetExercise.addNames('lukhanYO', 'English');
-            greetExercise.addNames('Phumza', 'Afrikaans');
-
-            assert.deepEqual({Thanos: 2, Phumza: 2, Lukhanyo: 2}, greetExercise.namesAdded());
-
-        });
-    });
-    describe('Greet counter' , function(){
-        it('should increment the counter from 0 to 1, when one name is greeted.' , function(){
-            let greetExercise = greeting();
-
-            greetExercise.addNames('saPho', 'english');
-
-            assert.deepEqual(1, greetExercise.getCounter());
-
-        });
-        it("shouldn't increment the counter, when the name is greeted again." , function(){
-            let greetExercise = greeting();
-
-            greetExercise.addNames('saPho', 'english');
-            greetExercise.addNames('SapHo', 'isixhosa');
-
-            assert.deepEqual(1, greetExercise.getCounter());
-
-        });
-        it('should increment the counter to 2, once 2 names are greeted.' , function(){
-            let greetExercise = greeting();
-
-            greetExercise.addNames('lukhanYo', 'english');
-            greetExercise.addNames('thanOs', 'isixhosa');
-
-            assert.deepEqual(2, greetExercise.getCounter());
-
-        });
-        it('should increment the counter to 5, once the names are greeted.' , function(){
-            let greetExercise = greeting();
-
-            greetExercise.addNames('hluMa', 'english');
-            greetExercise.addNames('sapho', 'isixhosa');
-            greetExercise.addNames('luKHanyo', 'Afikaans');
-            greetExercise.addNames('thaNos', 'Afrikaans');
-            greetExercise.addNames('phuMza', 'isixhosa');
-
-            assert.deepEqual(5,  greetExercise.getCounter());
-
-        });
-    });
-    describe('Data Entry', function(){
-        it('should record an entry for a table', function(){
-            let greetExercise = greeting();
-
-        
-            
-
-            greetExercise.setData({
-                name: 'Sapho',
-                count: 1
-            })
-
-            assert.deepEqual([{greeted_users: 'Sapho', counter:1}], greetExercise.storedData())
-        })
-    })
- 
+beforeEach(async function () {
+    // clean the tables before each test run
+    await db.query('TRUNCATE TABLE users_greeted restart identity;');
 });
+
+
+
+describe('Greetings App', function () {
+
+    describe('Greet our users', function () {
+        it('should greet Sapho in English, if English radio button has be checked.', async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.greetUser('saPhO', 'english');
+
+            assert.equal('Hello, Sapho', await greetExercise.greetMsg());
+
+        });
+        it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.', async function () {
+            let greetExercise = greeting(db);
+
+
+            await greetExercise.greetUser('thaNos', 'afrikaans');
+
+            assert.equal('Hallo, Thanos', await greetExercise.greetMsg());
+
+        });
+        it('should greet Lukhanyo in isiXhosa, if isiXhosa radio button has be checked.', async function () {
+            let greetExercise = greeting(db);
+
+
+            await greetExercise.greetUser('lukhanYo', 'isixhosa');
+
+            assert.equal('Molo, Lukhanyo', await greetExercise.greetMsg());
+
+        });
+    });
+
+    describe('Increment names to my empty object',  function () {
+        it('should increment Sapho as a value to my greeted-users property and give it a counter of 1 which will represent how many time(s) is the name greeted.', async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('saPhO', 'english');
+
+            assert.deepEqual([{id: 1, greeted_users: "Sapho", counter: 1 }], await greetExercise.namesAdded());
+
+        });
+        it("shouldn't increment Sapho if the name is already in my object but rather increment the counter of it to 3.", async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('saphO', 'english');
+            await greetExercise.addNames('sapho', 'english');
+            await greetExercise.addNames('saPho', 'english');
+
+            assert.deepEqual([{id: 1, greeted_users: "Sapho", counter: 3 }], await greetExercise.namesAdded());
+
+        });
+        it('should add a user to my array of objects and give it a counter value which will represent how many time(s) is the name greeted.', async function () {
+            let greetExercise = greeting(db);
+
+
+            await greetExercise.addNames('thanoS', 'english');
+            await greetExercise.addNames('phumza', 'afrikaans');
+            await greetExercise.addNames('lukhanyo', 'isixhosa');
+            await greetExercise.addNames('lukhanyo', 'isixhosa');
+
+            assert.deepEqual([{id:1, greeted_users: "Thanos", counter: 1 }, {id:2, greeted_users: "Phumza", counter: 1 }, {id:3, greeted_users: "Lukhanyo", counter: 2 }], await greetExercise.namesAdded());
+
+        });
+        
+    });
+    describe('Greet counter', function () {
+        it('should increment the counter from 0 to 1, when one name is greeted.', async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('saPho', 'english');
+
+            assert.deepEqual(1, await greetExercise.getCounter());
+
+        });
+        it("shouldn't increment the counter, when the name is greeted again.", async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('saPho', 'english');
+            await greetExercise.addNames('SapHo', 'isixhosa');
+
+            assert.deepEqual(1, await greetExercise.getCounter());
+
+        });
+        it('should increment the counter to 2, once 2 names are greeted.', async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('lukhanYo', 'english');
+            await greetExercise.addNames('thanOs', 'isixhosa');
+
+            assert.deepEqual(2, await greetExercise.getCounter());
+
+        });
+        it('should increment the counter to 5, once the names are greeted.', async function () {
+            let greetExercise = greeting(db);
+
+            await greetExercise.addNames('hluMa', 'english');
+            await greetExercise.addNames('sapho', 'isixhosa');
+            await greetExercise.addNames('luKHanyo', 'Afikaans');
+            await greetExercise.addNames('thaNos', 'Afrikaans');
+            await greetExercise.addNames('phuMza', 'isixhosa');
+
+            assert.deepEqual(3, await greetExercise.getCounter());
+
+        });
+    });
+
+
+});
+
+// afterEach(function () {
+//     db.end();
+// });
