@@ -1,5 +1,4 @@
 const assert = require('assert');
-
 const greeting = require('../greet-factory');
 const pgPromise = require('pg-promise')
 const pgp = pgPromise({});
@@ -21,14 +20,15 @@ if (process.env.NODE_ENV == 'production') {
 
 const db = pgp(config);
 
-beforeEach(async function () {
-    // clean the tables before each test run
-    await db.query('TRUNCATE TABLE users_greeted restart identity;');
-});
+
 
 
 
 describe('Greetings App', function () {
+    beforeEach(async function () {
+        // clean the tables before each test run
+        await db.query('TRUNCATE TABLE users_greeted restart identity;');
+    });
 
     describe('Greet our users', function () {
         it('should greet Sapho in English, if English radio button has be checked.', async function () {
@@ -57,6 +57,7 @@ describe('Greetings App', function () {
             assert.equal('Molo, Lukhanyo', await greetExercise.greetMsg());
 
         });
+
     });
 
     describe('Increment names to my empty object',  function () {
@@ -119,7 +120,7 @@ describe('Greetings App', function () {
             assert.deepEqual(2, await greetExercise.getCounter());
 
         });
-        it('should increment the counter to 5, once the names are greeted.', async function () {
+        it('should increment the counter to 3, once the names are greeted.', async function () {
             let greetExercise = greeting(db);
 
             await greetExercise.addNames('hluMa', 'english');
@@ -131,11 +132,12 @@ describe('Greetings App', function () {
             assert.deepEqual(3, await greetExercise.getCounter());
 
         });
+        
     });
+    // after(function () {
+    //     db.end();
+    // });
 
 
 });
 
-// afterEach(function () {
-//     db.end();
-// });

@@ -1,13 +1,18 @@
 module.exports = function (greeting) {
     async function Autopilot(req, res) {
-        req.flash('message', greeting.greetMsg());
+        // req.flash('greetingsUser', await greeting.greetMsg());
+       
 
         res.render('index', {
             greetedUsers: await greeting.getCounter(),
-            greetUsers: await greeting.greetMsg()
+            color: await greeting.applyColor()
+
+           
 
 
         });
+       
+       
 
 
     }
@@ -22,9 +27,17 @@ module.exports = function (greeting) {
 
             let greetedUsers = await greeting.getCounter();
 
+            let color = await greeting.applyColor()
+            console.log(color)
+            
+
+      
+
             res.render('index', {
                 greeter,
-                greetedUsers
+                greetedUsers,
+                color
+            
             })
         } catch (error) {
             console.log(error);

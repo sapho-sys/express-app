@@ -1,4 +1,3 @@
-const moment = require('moment');
 module.exports = function greeting(db) {
 	console.log();
 
@@ -47,9 +46,16 @@ module.exports = function greeting(db) {
 
 		}
 
-		
-
-
+		async function applyColor(){
+			if(strMessage === 'Error! Please select a language' || 
+			strMessage === 'Error! Do not enter special characters'
+			 || strMessage === 'Error! Please select enter your name'){
+				return 'error'
+			 }else{
+				return 'retry'
+			 }
+		}
+   
 	
 
 
@@ -85,7 +91,7 @@ module.exports = function greeting(db) {
 		
 	}
 
-	async function greetMsg() {
+	 function greetMsg() {
 		return strMessage;
 	}
 
@@ -113,6 +119,8 @@ module.exports = function greeting(db) {
 	}
 
 	
+
+	
 	
 	
 
@@ -125,6 +133,7 @@ module.exports = function greeting(db) {
 		greetMsg,
 		addNames,
 		resetDB,
-		greetedPool
+		greetedPool,
+		applyColor
 	}
 }
