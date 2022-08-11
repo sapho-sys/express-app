@@ -42,7 +42,7 @@
         <thead>
             <tr>
                 <th>Greet Users</th>
-                <th># of times greeted</th>
+                {{!-- <th># of times greeted</th> --}}
             </tr>
         </thead>
 
@@ -50,7 +50,7 @@
             {{#each allUsers}}
             <tr>
                 <td><a href="/info/{{this.greeted_users}}">{{this.greeted_users}}</a></td>
-                <td>{{this.counter}}</td>
+                {{!-- <td>{{this.counter}}</td> --}}
             </tr>
             {{/each}}
         </tbody>
