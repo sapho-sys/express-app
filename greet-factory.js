@@ -66,13 +66,13 @@ module.exports = function greeting(db) {
 				if (name.match(RegExp)) {
 					strName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 					if (lang === 'english' || lang === 'afrikaans' || lang === 'isixhosa') {
-						const sql = await data.query('SELECT * FROM users_greeted WHERE greeted_users  = $1', [strName]);
+						const sql = await data.manyOrNone('SELECT * FROM users_greeted WHERE greeted_users  = $1', [strName]);
 	
 						console.log(sql)
 						if (sql.length == 0) {
-							await data.query('INSERT INTO users_greeted (greeted_users, counter) VALUES ($1,$2)', [strName, 1]);
+							await data.manyOrNone('INSERT INTO users_greeted (greeted_users, counter) VALUES ($1,$2)', [strName, 1]);
 						} else {
-							await data.query('UPDATE users_greeted SET counter = counter + 1 WHERE greeted_users = $1', [strName]);
+							await data.manyOrNone('UPDATE users_greeted SET counter = counter + 1 WHERE greeted_users = $1', [strName]);
 						}
 	
 					}
@@ -96,7 +96,7 @@ module.exports = function greeting(db) {
 	}
 
 	async function getCounter() {
-		const dataLength = await data.query('SELECT COUNT(*) FROM users_greeted');
+		const dataLength = await data.manyOrNone('SELECT COUNT(*) FROM users_greeted');
 		console.log(dataLength);
 		 return dataLength[0].count;
 
@@ -107,13 +107,13 @@ module.exports = function greeting(db) {
 	}
 
 	async function namesAdded() {
-		const storedNames = await data.query('SELECT * FROM users_greeted');
+		const storedNames = await data.manyOrNone('SELECT * FROM users_greeted');
 
 		return storedNames;
 	}
 
 	async function greetedPool(username){
-		const sqlData = await data.query('SELECT * FROM  users_greeted  WHERE greeted_users = $1',[username]);
+		const sqlData = await data.manyOrNone('SELECT * FROM  users_greeted  WHERE greeted_users = $1',[username]);
 		const myCount = sqlData;
 		return myCount[0].counter;
 	}
