@@ -1,6 +1,6 @@
 const assert = require('assert');
 const greeting = require('../greet-factory');
-const pgp = require('pg-promise')()
+const pgp = require('pg-promise')();
 // const pgp = pgPromise();
 
 
@@ -129,7 +129,7 @@ describe('Greetings App', function () {
         });
         
         
-    after(function() {
+    after( async function() {
         db.$pool.end();
     });
 
