@@ -30,15 +30,16 @@ describe('Greetings App', function () {
         await db.query('TRUNCATE TABLE users_greeted restart identity;');
     });
 
-        it('should greet Sapho in English, if English radio button has be checked.', function () {
+        it('should greet Sapho in English, if English radio button has be checked.', function (done) {
             let greetExercise = greeting();
 
              greetExercise.greetUser('saPhO', 'english');
 
             assert.equal('Hello, Sapho',  greetExercise.greetMsg());
+            done();
 
         });
-        it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.', async function () {
+        it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.',  function () {
             let greetExercise = greeting();
 
 
@@ -129,7 +130,7 @@ describe('Greetings App', function () {
         });
         
         
-    after( async function() {
+    after(function() {
         db.$pool.end();
     });
 
