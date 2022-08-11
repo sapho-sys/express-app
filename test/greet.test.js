@@ -127,9 +127,10 @@ describe('Greetings App', function () {
             assert.deepEqual(3, await greetExercise.getCounter());
 
         });
+        // afterAll(db.$pool.end);
         
     after(function() {
-        db.end();
+        db.$pool.end();
     });
 
 
