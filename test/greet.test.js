@@ -59,6 +59,7 @@ describe('Greetings App', function () {
         beforeEach(async function () {
             // clean the tables before each test run
             await db.query('TRUNCATE TABLE users_greeted restart identity;');
+            await db.query('DELETE FROM users_greeted;')
         });
 
 
@@ -133,7 +134,7 @@ describe('Greetings App', function () {
         });
         
         
-    after(async function() {
+    after(function() {
         db.$pool.end();
     });
 
