@@ -1,7 +1,7 @@
 const assert = require('assert');
 const greeting = require('../greet-factory');
-const pgPromise = require('pg-promise')
-const pgp = pgPromise({});
+const pgp = require('pg-promise')()
+// const pgp = pgPromise();
 
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:sap123@localhost:5432/my_users';
@@ -30,37 +30,34 @@ describe('Greetings App', function () {
         await db.query('TRUNCATE TABLE users_greeted restart identity;');
     });
 
-    describe('Greet our users', function () {
-        it('should greet Sapho in English, if English radio button has be checked.', async function () {
-            let greetExercise = greeting(db);
+        it('should greet Sapho in English, if English radio button has be checked.', function () {
+            let greetExercise = greeting();
 
-            await greetExercise.greetUser('saPhO', 'english');
+             greetExercise.greetUser('saPhO', 'english');
 
-            assert.equal('Hello, Sapho', await greetExercise.greetMsg());
+            assert.equal('Hello, Sapho',  greetExercise.greetMsg());
 
         });
         it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.', async function () {
-            let greetExercise = greeting(db);
+            let greetExercise = greeting();
 
 
-            await greetExercise.greetUser('thaNos', 'afrikaans');
+             greetExercise.greetUser('thaNos', 'afrikaans');
 
-            assert.equal('Hallo, Thanos', await greetExercise.greetMsg());
-
-        });
-        it('should greet Lukhanyo in isiXhosa, if isiXhosa radio button has be checked.', async function () {
-            let greetExercise = greeting(db);
-
-
-            await greetExercise.greetUser('lukhanYo', 'isixhosa');
-
-            assert.equal('Molo, Lukhanyo', await greetExercise.greetMsg());
+            assert.equal('Hallo, Thanos',  greetExercise.greetMsg());
 
         });
+        it('should greet Lukhanyo in isiXhosa, if isiXhosa radio button has be checked.',  function () {
+            let greetExercise = greeting();
 
-    });
 
-    describe('Increment names to my empty object',  function () {
+             greetExercise.greetUser('lukhanYo', 'isixhosa');
+
+            assert.equal('Molo, Lukhanyo',  greetExercise.greetMsg());
+
+        });
+
+
         it('should increment Sapho as a value to my greeted-users property and give it a counter of 1 which will represent how many time(s) is the name greeted.', async function () {
             let greetExercise = greeting(db);
 
@@ -92,8 +89,6 @@ describe('Greetings App', function () {
 
         });
         
-    });
-    describe('Greet counter', function () {
         it('should increment the counter from 0 to 1, when one name is greeted.', async function () {
             let greetExercise = greeting(db);
 
@@ -133,10 +128,9 @@ describe('Greetings App', function () {
 
         });
         
+    after(function() {
+        db.end();
     });
-    // after(function () {
-    //     db.end();
-    // });
 
 
 });

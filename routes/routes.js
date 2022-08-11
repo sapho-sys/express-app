@@ -28,7 +28,7 @@ module.exports = function (greeting) {
             let greetedUsers = await greeting.getCounter();
 
             let color = await greeting.applyColor()
-            console.log(color)
+           
             
 
       
