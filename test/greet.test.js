@@ -134,7 +134,7 @@ describe('Greetings App', function () {
         });
         
         
-    after(function() {
+    after( async function() {
         db.$pool.end();
     });
 
