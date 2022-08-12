@@ -51,8 +51,8 @@ jobs:
     - run: npm install -g npm
     - run: npm install
     - run: |
-        PGPASSWORD=gar123 psql -h localhost -U gary -d garment_app -a -f ./sql/garment.sql
-        PGPASSWORD=gar123 psql -h localhost -U gary -d garment_app -a -f ./sql/data.sql
+        PGPASSWORD=gar123 psql -h localhost -U gary -d garment_app -a -f ./sql/my_users.sql
+        
     - run: npm run build --if-present
     - run: npm test
     env: 
