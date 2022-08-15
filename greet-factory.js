@@ -3,61 +3,6 @@ module.exports = function greeting(db) {
 
 	const data = db;
 	const RegExp = /^[A-Za-z]+$/;
-	var strMessage = ' ';
-	
-
-
-	async function greetUser(myName, lang) {
-		let theName = '';
-		let strName = myName.trim();
-
-
-
-			if (strName !== '') {
-				if (strName.match(RegExp)) {
-					theName = strName.charAt(0).toUpperCase() + strName.slice(1).toLowerCase();
-
-					if (lang === 'english' || lang === 'afrikaans' || lang === 'isixhosa') {
-						if (lang === 'english') {
-							strMessage = 'Hello, ' + theName;
-
-						} else if (lang === 'afrikaans') {
-							strMessage = 'Hallo, ' + theName;
-
-						} else if (lang === 'isixhosa') {
-							strMessage = 'Molo, ' + theName;
-
-						}
-
-					} else {
-						strMessage = 'Error! Please select a language';
-
-					}
-
-				} else {
-					strMessage = 'Error! Do not enter special characters';
-
-				}
-
-			} else {
-				strMessage = 'Error! Please select enter your name';
-
-			}
-
-		}
-
-		async function applyColor(){
-			if(strMessage === 'Error! Please select a language' || 
-			strMessage === 'Error! Do not enter special characters'
-			 || strMessage === 'Error! Please select enter your name'){
-				return 'error'
-			 }else{
-				return 'retry'
-			 }
-		}
-   
-	
-
 
 	async function addNames(userName, lang) {
 		let name = userName.trim()
@@ -84,16 +29,10 @@ module.exports = function greeting(db) {
 		 catch(err){
 			console.error('Somethin went wrong', err);
 			throw err;
-
-		 }
-
-		
-		
+		 }		
 	}
 
-	 function greetMsg() {
-		return strMessage;
-	}
+	
 
 	async function getCounter() {
 		const dataLength = await data.manyOrNone('SELECT COUNT(*) FROM users_greeted');
@@ -118,22 +57,11 @@ module.exports = function greeting(db) {
 		return myCount[0].counter;
 	}
 
-	
-
-	
-	
-	
-
-	
-
 	return {
 		getCounter,
 		namesAdded,
-		greetUser,
-		greetMsg,
 		addNames,
 		resetDB,
-		greetedPool,
-		applyColor
+		greetedPool
 	}
 }

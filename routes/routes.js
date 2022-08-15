@@ -1,40 +1,23 @@
-module.exports = function (greeting) {
-    async function Autopilot(req, res) {
-        // req.flash('greetingsUser', await greeting.greetMsg());
-       
 
+const greeter = require('../greet2-factory');
+module.exports = function (greeting,greeter) {
+    async function defaultRoute(req, res) {
         res.render('index', {
             greetedUsers: await greeting.getCounter(),
-            color: await greeting.applyColor()
-
-           
-
-
+            color: greeter.applyColor()
         });
-       
-       
-
 
     }
 
     async function HomePage(req, res) {
         try {
-            await greeting.greetUser(req.body.username, req.body.choice);
-
+            greeter.greetUser(req.body.username, req.body.choice);
             await greeting.addNames(req.body.username, req.body.choice);
-
-            let greeter = await greeting.greetMsg();
-
+            let greeterMsg = greeter.greetMsg();
             let greetedUsers = await greeting.getCounter();
-
-            let color = await greeting.applyColor()
-           
-            
-
-      
-
+            let color = greeter.applyColor()
             res.render('index', {
-                greeter,
+                greeterMsg,
                 greetedUsers,
                 color
             
@@ -70,7 +53,7 @@ module.exports = function (greeting) {
     }
 
     return {
-        Autopilot,
+        defaultRoute,
         Information,
         Detail,
         HomePage,

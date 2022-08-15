@@ -27,35 +27,6 @@ const db = pgp(config);
 describe('Greetings App', function () {
    
 
-        it('should greet Sapho in English, if English radio button has be checked.', function () {
-            let greetExercise = greeting();
-
-             greetExercise.greetUser('saPhO', 'english');
-
-            assert.equal('Hello, Sapho',  greetExercise.greetMsg());
-            
-
-        });
-        it('should greet Thanos in Afrikaans, if Afrikaans radio button has be checked.',  function () {
-            let greetExercise = greeting();
-
-
-             greetExercise.greetUser('thaNos', 'afrikaans');
-
-            assert.equal('Hallo, Thanos',  greetExercise.greetMsg());
-            
-
-        });
-        it('should greet Lukhanyo in isiXhosa, if isiXhosa radio button has be checked.',  function () {
-            let greetExercise = greeting();
-
-
-             greetExercise.greetUser('lukhanYo', 'isixhosa');
-
-            assert.equal('Molo, Lukhanyo',  greetExercise.greetMsg());
-
-        });
-
         beforeEach(async function () {
             // clean the tables before each test run
             await db.query('TRUNCATE TABLE users_greeted restart identity;');

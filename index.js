@@ -7,7 +7,8 @@ const session = require('express-session');
 const moment = require('moment');
 const flash = require('express-flash');
 var app = express();
-const greeting = require('./greet-factory');
+const greetings = require('./greet-factory');
+const greeter = require('./greet2-factory');
 const greetingRouters = require('./routes/routes')
 const pgPromise = require('pg-promise')
 const pgp = pgPromise({});
@@ -30,9 +31,10 @@ if (process.env.NODE_ENV == 'production') {
 const db = pgp(config);
 
 
-const greetingsDB = greeting(db);
+const greetingsDB = greetings(db);
+const greetPeople = greeter();
 
-let greetRouter = greetingRouters(greetingsDB);
+let greetRouter = greetingRouters(greetingsDB,greetPeople);
 
 
 //config express as middleware
@@ -60,7 +62,7 @@ app.use(session({
 app.use(flash());
 
 
-app.get('/', greetRouter.Autopilot);
+app.get('/', greetRouter.defaultRoute);
 
 app.post('/action', greetRouter.HomePage);
 
